@@ -20,12 +20,9 @@ const pageViewGa = (WrappedComponent, options = {}) => {
         document.body.append(script);
     }
     window.dataLayer = window.dataLayer || [];
-    function gtag() { 
-        dataLayer.push(arguments); 
+    function gtag() {
+        dataLayer.push(arguments);
     }
-    gtag('js', new Date());
-
-    gtag('config', 'G-F9VS4W64W8');
 
     return class extends Component {
         state = {
@@ -47,6 +44,8 @@ const pageViewGa = (WrappedComponent, options = {}) => {
             const page = this.props.location.pathname + this.props.location.search
             trackingPageView(page)
             loadScript("https://www.googletagmanager.com/gtag/js?id=G-F9VS4W64W8")
+            gtag('js', new Date());
+            gtag('config', 'G-F9VS4W64W8');
         }
 
         componentDidUpdate(prevProps) {
