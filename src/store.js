@@ -1,18 +1,21 @@
-import { createStore } from 'redux'
+import { createStore } from "redux";
 
 const initialState = {
   sidebarShow: true,
-  isLogged: false
-}
+  isLogged: false,
+};
 
 const changeState = (state = initialState, { type, ...rest }) => {
   switch (type) {
-    case 'set':
-      return { ...state, ...rest }
+    case "set":
+      return { ...state, ...rest };
     default:
-      return state
+      return state;
   }
-}
+};
 
-const store = createStore(changeState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
-export default store
+const store = createStore(
+  changeState,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+export default store;

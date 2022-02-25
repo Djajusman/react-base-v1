@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   CButton,
   CCard,
@@ -13,25 +13,23 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { cilLockLocked, cilUser } from "@coreui/icons";
 
 const Login = () => {
-  const dispatch = useDispatch()
-  const isLogged = useSelector((state) => state.isLogged)
-  const [validated, setValidated] = useState(false)
+  const dispatch = useDispatch();
+  const isLogged = useSelector((state) => state.isLogged);
+  const [validated, setValidated] = useState(false);
   const handleSubmit = (event) => {
-    const form = event.currentTarget
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
+      event.preventDefault();
+      event.stopPropagation();
     }
-    setValidated(true)
-  }
-  useEffect(() => {
-    
-  }, []);
+    setValidated(true);
+  };
+  useEffect(() => {}, []);
 
   return (
     <div className="bg-base min-vh-100 d-flex flex-row align-items-center">
@@ -47,13 +45,23 @@ const Login = () => {
                   onSubmit={handleSubmit}
                 >
                   <h1>Login</h1>
-                  <p className="text-medium-emphasis">Sign In to your account</p>
+                  <p className="text-medium-emphasis">
+                    Sign In to your account
+                  </p>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon icon={cilUser} />
                     </CInputGroupText>
-                    <CFormInput type='text' id='userName' placeholder="Username" autoComplete="username" required />
-                    <CFormFeedback invalid>Please provide a valid username.</CFormFeedback>
+                    <CFormInput
+                      type="text"
+                      id="userName"
+                      placeholder="Username"
+                      autoComplete="username"
+                      required
+                    />
+                    <CFormFeedback invalid>
+                      Please provide a valid username.
+                    </CFormFeedback>
                   </CInputGroup>
                   <CInputGroup className="mb-4">
                     <CInputGroupText>
@@ -61,16 +69,25 @@ const Login = () => {
                     </CInputGroupText>
                     <CFormInput
                       type="password"
-                      id='password'
+                      id="password"
                       placeholder="Password"
                       autoComplete="current-password"
                       required
                     />
-                    <CFormFeedback invalid>Password must have at least 8 character!</CFormFeedback>
+                    <CFormFeedback invalid>
+                      Password must have at least 8 character!
+                    </CFormFeedback>
                   </CInputGroup>
-                  {/* <CRow>
+                  <CRow>
                     <CCol xs={6}>
-                      <CButton type='submit' color="primary" className="px-4" onClick={() => dispatch({ type: 'set', isLogged: !isLogged })}>
+                      <CButton
+                        type="submit"
+                        color="primary"
+                        className="px-4"
+                        onClick={() =>
+                          dispatch({ type: "set", isLogged: !isLogged })
+                        }
+                      >
                         Login
                       </CButton>
                     </CCol>
@@ -79,26 +96,27 @@ const Login = () => {
                         Forgot password?
                       </CButton>
                     </CCol>
-                  </CRow> */}
-                  <CButton
+                  </CRow>
+                  {/* <CButton
                     title="Sign In"
                     onPress={() =>
                       onSignIn({
-                        uid: 'Aa0Bb1Cc2Dd3Ee4Ff5Gg6Hh7Ii8Jj9',
-                        username: 'Joaquin Phoenix',
-                        email: 'phoenix@example.com',
+                        uid: "Aa0Bb1Cc2Dd3Ee4Ff5Gg6Hh7Ii8Jj9",
+                        username: "Joaquin Phoenix",
+                        email: "phoenix@example.com",
                         credits: 42,
                       })
                     }
-                  />
-                  <CButton title="Test Crash" onPress={() => crashlytics().crash()} />
+                  /> */}
+                  {/* <CButton
+                    title="Test Crash"
+                    onPress={() => crashlytics().crash()}
+                  /> */}
                 </CForm>
-                <CRow className='text-center mt-3'>
+                <CRow className="text-center mt-3">
                   <div>
                     Dont have any account?
-                    <Link to="/register">
-                      Register here
-                    </Link>
+                    <Link to="/register">Register here</Link>
                   </div>
                 </CRow>
               </CCardBody>
@@ -107,7 +125,7 @@ const Login = () => {
         </CRow>
       </CContainer>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
