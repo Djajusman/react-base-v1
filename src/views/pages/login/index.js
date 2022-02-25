@@ -68,7 +68,7 @@ const Login = () => {
                     />
                     <CFormFeedback invalid>Password must have at least 8 character!</CFormFeedback>
                   </CInputGroup>
-                  {/* <CRow>
+                  <CRow>
                     <CCol xs={6}>
                       <CButton type='submit' color="primary" className="px-4" onClick={() => dispatch({ type: 'set', isLogged: !isLogged })}>
                         Login
@@ -79,8 +79,8 @@ const Login = () => {
                         Forgot password?
                       </CButton>
                     </CCol>
-                  </CRow> */}
-                  <CButton
+                  </CRow>
+                  {/* <CButton
                     title="Sign In"
                     onPress={() =>
                       onSignIn({
@@ -90,8 +90,8 @@ const Login = () => {
                         credits: 42,
                       })
                     }
-                  />
-                  <CButton title="Test Crash" onPress={() => crashlytics().crash()} />
+                  /> */}
+                  {/* <CButton title="Test Crash" onPress={() => crashlytics().crash()} /> */}
                 </CForm>
                 <CRow className='text-center mt-3'>
                   <div>

@@ -23,10 +23,11 @@ const post = (api) => (data, token) => {
         data,
         {
             method: 'POST',
+            body: JSON.stringify(data),
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${CONFIG.token}`,
                 // 'apikey': process.env.REACT_APP_API_KEY
             }
         }
@@ -71,12 +72,13 @@ const getWithSlug = (api) => (slug, token) => {
 }
 
 // export const socialMedia = post('social-media')
-// export const getUserList = get('users')
+export const getUserList = get('users')
+export const postUser = post('users')
 // export const getUserScore = getWithSlug('users')
 
 const API = {
-    // socialMedia,
-    // getUserList
+    postUser,
+    getUserList
 }
 
 export default API;
