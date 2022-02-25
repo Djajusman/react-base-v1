@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-
 import {
   CCard,
   CCardBody,
@@ -26,19 +25,20 @@ import {
   CToast,
   CToastClose
 } from '@coreui/react'
+import { getUserList, postUser } from 'src/api'
+import { getToken, onMessageListener, firebase } from '../../../config/initFirebase'
 
 const Dashboard = () => {
 
   // const random = (min, max) => {
   //   return Math.floor(Math.random() * (max - min + 1) + min)
   // }
-  const token = '8455c5d5685200059c36aa9783ae516f26ce651715cffba3b5a4095490a6ecca'
   const [listDataUser, setListDataUser] = useState([])
   const [visible, setVisible] = useState(false)
-  const [name, nameInput] = useInput({ type: "text", placeholder:"Masukkan Nama" });
-  const [email, emailInput] = useInput({ type: "email", placeholder:"nama@lalala.com" });
-  const [gender, genderInput] = useInput({ type: "text", placeholder:"male/female" });
-  const [status, statusInput] = useInput({ type: "text", placeholder:"active/inactive" });
+  const [name, nameInput] = useInput({ type: "text", placeholder: "Masukkan Nama" });
+  const [email, emailInput] = useInput({ type: "email", placeholder: "nama@lalala.com" });
+  const [gender, genderInput] = useInput({ type: "text", placeholder: "male/female" });
+  const [status, statusInput] = useInput({ type: "text", placeholder: "active/inactive" });
   const [toast, addToast] = useState(0);
   const toaster = useRef();
   const successToast = (
@@ -49,60 +49,75 @@ const Dashboard = () => {
       </div>
     </CToast>
   );
+  const failedToast = (
+    <CToast autohide={true} visible={false} color="danger" className="text-white align-items-center">
+      <div className="d-flex">
+        <CToastBody>Failed</CToastBody>
+        <CToastClose className="me-2 m-auto" white />
+      </div>
+    </CToast>
+  );
 
-  function userList() {
-    fetch(
-      "https://gorest.co.in/public/v2/users",
-      {
-        method: "GET",
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        }),
-      }
-    )
-      .then((response) => response.json())
-      .then((res) => {
-        var tempList = [];
-        tempList = res;
-        console.log("List Data User => ", tempList);
-        setListDataUser(tempList);
-      })
-      .catch((error) => console.log(error));
+  const [show, setShow] = useState(false);
+  const [notification, setNotification] = useState({title: '', body: ''});
+  const [isTokenFound, setTokenFound] = useState(false);
+  
+
+  
+  function messagingFirebase() {
+    onMessageListener().then(payload => {
+      setShow(true);
+      setNotification({title: payload.notification.title, body: payload.notification.body})
+      console.log(payload);
+    }).catch(err => console.log('failed: ', err));
+    // const messaging = firebase.messaging()
+    // messaging.requestPermission().then(() => {
+    //   return messaging.getToken()
+    // }).then(token => {
+    //   console.log('Firebase Token : ', token)
+    // }).catch((err) => {
+    //   console.log(err);
+    // })
+  }
+
+  function getUserData() {
+    getUserList().then((res) => {
+      var tempList = [];
+      tempList = res.data;
+      console.log("List Data User => ", tempList);
+      setListDataUser(tempList);
+    })
   };
-  function userAdd() {
-    var body = {
+
+  function postUserData() {
+    var data = {
       name: name,
       email: email,
       gender: gender,
       status: status,
     }
-    fetch(
-      "https://gorest.co.in/public/v2/users",
-      {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        }),
-      }
-    )
-      .then((response) => response.json())
-      .then((res) => {
+    postUser(data).then((res) => {
+      console.log("Api status => ", res);
+      if (res.statusText === "Created") {
         setVisible(false)
-        userList()
+        getUserData()
         addToast(successToast);
-      })
-      .catch((error) => console.log(error));
+      } else {
+        addToast(failedToast);
+      }
+    })
   };
+
   function useInput({ type, placeholder /*...*/ }) {
     const [value, setValue] = useState("");
     const input = <CFormInput value={value} onChange={e => setValue(e.target.value)} type={type} placeholder={placeholder} />;
     return [value, input];
   }
+
   useEffect(() => {
-    userList()
+    messagingFirebase();
+    getToken(setTokenFound)
+    getUserData()
   }, [])
 
   return (
@@ -135,7 +150,7 @@ const Dashboard = () => {
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Batal
           </CButton>
-          <CButton color="primary" onClick={() => userAdd()}>Tambah</CButton>
+          <CButton color="primary" onClick={() => postUserData()}>Tambah</CButton>
         </CModalFooter>
       </CModal>
       <CCol className="d-flex flex-row-reverse mb-4">
